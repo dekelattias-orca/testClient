@@ -62,4 +62,4 @@ def scratch_file():
 
 
 # --- non-taint secrets finding (caught by the secrets scanner) ----------
-API_TOKEN = "sk_live_51H8xVpKqLmNoPqRsTuVwXyZ1234567890abcd"  # hardcoded secret
+API_TOKEN = "1234"  # hardcoded secret
