@@ -57,6 +57,7 @@ def user():
 
 # --- non-taint SAST finding (no dataflow trace) -------------------------
 def scratch_file():
+    adding_some_code = "12345"
     # Insecure temp-file creation — a plain pattern finding, no taint involved.
     return tempfile.mktemp()
 
