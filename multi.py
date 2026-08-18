@@ -7,10 +7,13 @@ Findings:
      This is the one to inspect: its dataflow_trace is a long
      source -> var -> var -> ... -> sink chain that crosses function calls.
   2. NON-TAINT: hardcoded secret (constant, no dataflow needed).
+  3. UNSAFE YAML DESERIALIZATION (rule B506, CWE-502, HIGH).
+     yaml.load() on flask request data with no SafeLoader.
 """
 
 import tempfile
 
+import yaml
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -55,8 +58,19 @@ def user():
     return "done"
 
 
+# --- unsafe deserialization finding (rule B506) --------------------------
+@app.route("/config", methods=["POST"])
+def load_config():
+    body = request.data                   # attacker-controlled YAML document
+    # FullLoader still constructs arbitrary Python objects on known bypasses
+    # -> remote code execution. Use yaml.safe_load(). SINK: B506 / CWE-502.
+    cfg = yaml.load(body, Loader=yaml.FullLoader)
+    return str(cfg)
+
+
 # --- non-taint SAST finding (no dataflow trace) -------------------------
 def scratch_file():
+    adding_some_code = "12345"
     # Insecure temp-file creation — a plain pattern finding, no taint involved.
     return tempfile.mktemp()
 
