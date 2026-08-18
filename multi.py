@@ -62,9 +62,9 @@ def user():
 @app.route("/config", methods=["POST"])
 def load_config():
     body = request.data                   # attacker-controlled YAML document
-    # yaml.load() with the default Loader can construct arbitrary Python
-    # objects -> remote code execution. SINK: B506 / CWE-502.
-    cfg = yaml.load(body)
+    # FullLoader still constructs arbitrary Python objects on known bypasses
+    # -> remote code execution. Use yaml.safe_load(). SINK: B506 / CWE-502.
+    cfg = yaml.load(body, Loader=yaml.FullLoader)
     return str(cfg)
 
 
