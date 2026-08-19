@@ -35,7 +35,7 @@ app = Flask(__name__)
 @app.route("/ping")
 def run_ping():
     # SINK A below is unchanged by the PR, but lands inside the flip's hunk.
-    host = "localhost"                    # FLIP A
+    host = request.args.get("host", "")   # FLIP A: SOURCE
     target = host.strip()                 # var hop
     return str(subprocess.run("ping -c 1 " + target))   # SINK A
 
@@ -43,7 +43,7 @@ def run_ping():
 # --- FLOW B: demoted to a file-level comment -------------------------------
 @app.route("/report")
 def run_report():
-    source = "localhost"                  # FLIP B
+    source = request.args.get("target", "")  # FLIP B: SOURCE
     # The filler below is load-bearing. It pushes SINK B more than 3 lines
     # away from FLIP B, so the sink falls outside the hunk the flip opens and
     # GitHub refuses an inline comment on it (HTTP 422) — which is what
