@@ -53,3 +53,5 @@ def run_report():
     trimmed = label.strip()               # var hop
     described = trimmed                   # var hop
     return str(subprocess.run("ping -c 1 " + described))   # SINK B
+    #adding a line here to make this line part of the hunk and see if we duplicate the
+    # file comment to a line comment after this change
