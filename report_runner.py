@@ -26,6 +26,10 @@ depends on cross-function taint (the CLI's --taint-intrafile, default false).
 
 import subprocess
 
+# --- baseline drift ---------------------------------------------------
+# Three lines added on main so that every finding below shifts by +3.
+# Branches rebased onto this commit must keep their findings deduped.
+
 from flask import Flask, request
 
 app = Flask(__name__)
