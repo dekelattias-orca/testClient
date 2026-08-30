@@ -22,8 +22,6 @@ being reported on a line the diff never touched:
            hop just above SINK B, which pulls it INSIDE a hunk without making
            it a changed line: inline-eligible, but already commented.
 
-  FLOW C — stage 2, added above FLOW A. Shifts SINK A and SINK B down.
-
 Both flows keep source and sink in the SAME function on purpose, so neither
 depends on cross-function taint (the CLI's --taint-intrafile, default false).
 """
@@ -37,14 +35,6 @@ import subprocess
 from flask import Flask, request
 
 app = Flask(__name__)
-
-
-# --- FLOW C: new finding, sink on a line the PR ADDS -----------------------
-@app.route("/trace")
-def run_trace():
-    hop = request.args.get("hop", "")     # FLOW C: SOURCE
-    waypoint = hop.strip()                # var hop
-    return str(subprocess.run("traceroute -m 1 " + waypoint))   # SINK C
 
 
 # --- FLOW A: inline comment anchored on an UNCHANGED context line ----------
