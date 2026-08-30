@@ -18,7 +18,9 @@ being reported on a line the diff never touched:
            line  ->  inline comment on a context line.
 
   FLOW B — flip sits 8 lines above its sink, so the sink falls OUTSIDE every
-           hunk  ->  demoted to a file-level comment.
+           hunk  ->  demoted to a file-level comment. STAGE 2 edits the var
+           hop just above SINK B, which pulls it INSIDE a hunk without making
+           it a changed line: inline-eligible, but already commented.
 
 Both flows keep source and sink in the SAME function on purpose, so neither
 depends on cross-function taint (the CLI's --taint-intrafile, default false).
@@ -39,15 +41,15 @@ app = Flask(__name__)
 @app.route("/ping")
 def run_ping():
     # SINK A below is unchanged by the PR, but lands inside the flip's hunk.
-    host = "localhost"                    # FLIP A
-    target = host.strip()                 # var hop
-    return str(subprocess.run("ping -c 1 " + target))   # SINK A
+    host = request.args.get("host", "")   # FLIP A: SOURCE
+    host = host.strip()                   # var hop (renamed target -> host)
+    return str(subprocess.run("ping -c 1 " + host))   # SINK A
 
 
 # --- FLOW B: demoted to a file-level comment -------------------------------
 @app.route("/report")
 def run_report():
-    source = "localhost"                  # FLIP B
+    source = request.args.get("target", "")  # FLIP B: SOURCE
     # The filler below is load-bearing. It pushes SINK B more than 3 lines
     # away from FLIP B, so the sink falls outside the hunk the flip opens and
     # GitHub refuses an inline comment on it (HTTP 422) — which is what
@@ -55,5 +57,5 @@ def run_report():
     # between FLIP B and SINK B if you edit this.
     label = str(source)                   # var hop
     trimmed = label.strip()               # var hop
-    described = trimmed                   # var hop
+    described = trimmed                   # var hop (last hop before SINK B)
     return str(subprocess.run("ping -c 1 " + described))   # SINK B
