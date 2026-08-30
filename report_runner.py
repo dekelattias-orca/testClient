@@ -52,8 +52,8 @@ def run_trace():
 def run_ping():
     # SINK A below is unchanged by the PR, but lands inside the flip's hunk.
     host = request.args.get("host", "")   # FLIP A: SOURCE
-    target = host.strip()                 # var hop
-    return str(subprocess.run("ping -c 1 " + target))   # SINK A
+    host = host.strip()                   # var hop (renamed target -> host)
+    return str(subprocess.run("ping -c 1 " + host))   # SINK A
 
 
 # --- FLOW B: demoted to a file-level comment -------------------------------
