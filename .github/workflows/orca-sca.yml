@@ -1,0 +1,21 @@
+name: Orca SCA Scan
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  orca-sca-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Orca SCA Scan
+        uses: dekelattias-orca/shiftleft-sca-action-fork@1.0.0
+        with:
+          api_token: ${{ secrets.ORCA_SECURITY_API_TOKEN }}
+          project_key: default
+          path: .
+          security_checks: vulns,license,malicious
+          format: table
+          console_output: table
