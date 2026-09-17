@@ -11,6 +11,7 @@ Findings:
      yaml.load() on flask request data with no SafeLoader.
 """
 
+import subprocess
 import tempfile
 
 import yaml
@@ -24,6 +25,15 @@ def read_user_id():
     raw = request.args.get("id", "")     # SOURCE
     collected = raw                       # var hop
     return collected
+
+
+# --- command-injection finding, entirely on newly added lines ------------
+@app.route("/ping")
+def ping_host():
+    host = request.args.get("host", "")   # SOURCE
+    target = host.strip()                 # var hop
+    # SINK: shell string built from request data -> rule subprocess-injection
+    return str(subprocess.run("ping -c 1 " + target))
 
 
 # --- function 2: propagate through several local vars -------------------
@@ -62,8 +72,9 @@ def user():
 @app.route("/config", methods=["POST"])
 def load_config():
     body = request.data                   # attacker-controlled YAML document
-    # FullLoader still constructs arbitrary Python objects on known bypasses
-    # -> remote code execution. Use yaml.safe_load(). SINK: B506 / CWE-502.
+    # NOTE: FullLoader is not a sandbox. Known gadget chains still construct
+    # arbitrary Python objects from it, so this is remote code execution.
+    # Use yaml.safe_load() instead. SINK: B506 / CWE-502.
     cfg = yaml.load(body, Loader=yaml.FullLoader)
     return str(cfg)
 
