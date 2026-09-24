@@ -11,6 +11,7 @@ Findings:
      yaml.load() on flask request data with no SafeLoader.
 """
 
+import re
 import subprocess
 import tempfile
 
@@ -28,12 +29,18 @@ def read_user_id():
 
 
 # --- command-injection finding, entirely on newly added lines ------------
+# Allowlist: hostnames/IPv4 only — no shell metacharacters, spaces or flags.
+_HOST_RE = re.compile(r"\A(?!-)[A-Za-z0-9._-]{1,253}\Z")
+
+
 @app.route("/ping")
 def ping_host():
     host = request.args.get("host", "")   # SOURCE
     target = host.strip()                 # var hop
-    # SINK: shell string built from request data -> rule subprocess-injection
-    return str(subprocess.run("ping -c 1 " + target))
+    if not _HOST_RE.match(target):
+        return "invalid host", 400
+    # Fixed command, argument vector (no shell) -> user input cannot alter the command.
+    return str(subprocess.run(["ping", "-c", "1", "--", target], shell=False))
 
 
 # --- function 2: propagate through several local vars -------------------
