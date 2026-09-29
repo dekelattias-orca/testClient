@@ -8,10 +8,31 @@ resource "aws_s3_bucket" "reports" {
   bucket = "shiftleft-prfix-eval-reports"
 }
 
-# Unencrypted at rest, world-readable ACL, no public-access block.
+# Object ownership controls so the ACL below is accepted by S3.
+resource "aws_s3_bucket_ownership_controls" "reports" {
+  bucket = aws_s3_bucket.reports.id
+
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+}
+
+# Private ACL — no anonymous read or write access.
 resource "aws_s3_bucket_acl" "reports" {
   bucket = aws_s3_bucket.reports.id
-  acl    = "public-read"
+  acl    = "private"
+
+  depends_on = [aws_s3_bucket_ownership_controls.reports]
+}
+
+# Block any public ACL or public bucket policy from being applied later.
+resource "aws_s3_bucket_public_access_block" "reports" {
+  bucket = aws_s3_bucket.reports.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_security_group" "reports_ingress" {
