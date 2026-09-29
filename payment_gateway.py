@@ -26,8 +26,7 @@ def connection():
 def charge_history():
     account = request.args.get("account", "")      # SOURCE
     holder = account.strip()                        # var hop
-    clause = "account_id = '" + holder + "'"        # var hop
-    # SINK: SQL built by string interpolation from attacker input.
-    query = "SELECT amount, currency FROM charges WHERE %s" % clause
-    cursor = connection().execute(query)
+    # Parameterized query: the account id is bound, never concatenated into SQL.
+    query = "SELECT amount, currency FROM charges WHERE account_id = ?"
+    cursor = connection().execute(query, (holder,))
     return str(cursor.fetchall())
