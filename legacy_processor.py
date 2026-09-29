@@ -183,12 +183,26 @@ def normalize_field_40(value):
 # --- the finding under fix -------------------------------------------------
 @app.route("/export")
 def export_report():
-    report_id = request.args.get("report", "")   # SOURCE
-    name = report_id.strip()                      # var hop
-    path = name                                   # var hop
-    # SINK: attacker-controlled value concatenated into a shell command.
-    command = "tar -czf /tmp/export.tgz /var/reports/" + path
-    return str(subprocess.run(command, shell=True, capture_output=True))
+    report_id = request.args.get("report", "")
+    name = report_id.strip()
+    # Allowlist of characters permitted in a report identifier: no path
+    # separators, no shell metacharacters, no traversal sequences.
+    allowed = set(
+        "abcdefghijklmnopqrstuvwxyz"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "0123456789._-"
+    )
+    if not name or not set(name) <= allowed or name.startswith(".") or "." * 2 in name:
+        return "invalid report identifier", 400
+    path = "/var/reports/" + name
+    # Argument list with shell=False: the value is passed as a single argument
+    # and is never interpreted by a shell.
+    result = subprocess.run(
+        ["tar", "-czf", "/tmp/export.tgz", path],
+        shell=False,
+        capture_output=True,
+    )
+    return str(result)
 
 
 def normalize_field_41(value):
