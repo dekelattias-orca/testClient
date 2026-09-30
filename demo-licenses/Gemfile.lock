@@ -1,0 +1,140 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    atk (3.5.1)
+      glib2 (= 3.5.1)
+    bson (4.15.0)
+    charlock_holmes (0.7.7)
+    concurrent-ruby (1.2.3)
+    curses (1.4.5)
+    daemons (1.4.1)
+    eventmachine (1.2.7)
+    faraday (2.9.0)
+    ffi (1.16.3)
+    gdk_pixbuf2 (3.5.1)
+      glib2 (= 3.5.1)
+    gio2 (3.5.1)
+      glib2 (= 3.5.1)
+    glib2 (3.5.1)
+    google-protobuf (3.25.3)
+    gpgme (2.0.24)
+    grpc (1.63.0)
+      google-protobuf (~> 3.25)
+    gtk3 (3.5.1)
+      atk (= 3.5.1)
+      gdk_pixbuf2 (= 3.5.1)
+      pango (= 3.5.1)
+    json (2.7.2)
+    licensed (4.4.0)
+    mongo (2.20.0)
+      bson (>= 4.14.1)
+    mysql2 (0.5.5)
+    nokogiri (1.16.5)
+    pango (3.5.1)
+      glib2 (= 3.5.1)
+    pg (1.5.6)
+    puma (6.4.2)
+      nio4r (~> 2.0)
+    nio4r (2.7.1)
+    qtbindings (4.8.6.3)
+    rack (3.0.11)
+    rake (13.2.1)
+    readline (0.0.4)
+    redis (5.2.0)
+    rmagick (5.3.0)
+    ruby-mp3info (0.8.10)
+    sequel (5.80.0)
+    sinatra (4.0.0)
+      rack (>= 3.0.0)
+    sqlite3 (1.7.3)
+    thin (1.8.2)
+      daemons (~> 1.0)
+      eventmachine (~> 1.0)
+      rack (>= 1)
+    tilt (2.3.0)
+    webrick (1.8.1)
+    cairo-gobject (3.5.1)
+      glib2 (= 3.5.1)
+    clutter (3.5.1)
+      glib2 (= 3.5.1)
+    clutter-gtk (3.5.1)
+      clutter (= 3.5.1)
+    gdk3 (3.5.1)
+      gdk_pixbuf2 (= 3.5.1)
+    gobject-introspection (3.5.1)
+      glib2 (= 3.5.1)
+    goocanvas (3.5.1)
+      gtk3 (= 3.5.1)
+    gstreamer (3.5.1)
+      glib2 (= 3.5.1)
+    gtksourceview3 (3.5.1)
+      gtk3 (= 3.5.1)
+    gtksourceview4 (3.5.1)
+      gtk3 (= 3.5.1)
+    poppler (3.5.1)
+      gdk3 (= 3.5.1)
+    rsvg2 (3.5.1)
+      gdk_pixbuf2 (= 3.5.1)
+    vte3 (3.5.1)
+      gtk3 (= 3.5.1)
+    webkit2-gtk (3.5.1)
+      gtk3 (= 3.5.1)
+    wnck3 (3.5.1)
+      gtk3 (= 3.5.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  atk
+  charlock_holmes
+  concurrent-ruby
+  curses
+  eventmachine
+  faraday
+  ffi
+  gdk_pixbuf2
+  gio2
+  glib2
+  google-protobuf
+  gpgme
+  grpc
+  gtk3
+  json
+  licensed
+  mongo
+  mysql2
+  nokogiri
+  pango
+  pg
+  puma
+  qtbindings
+  rack
+  rake
+  readline
+  redis
+  rmagick
+  ruby-mp3info
+  sequel
+  sinatra
+  sqlite3
+  thin
+  tilt
+  webrick
+  cairo-gobject
+  clutter
+  clutter-gtk
+  gdk3
+  gobject-introspection
+  goocanvas
+  gstreamer
+  gtksourceview3
+  gtksourceview4
+  poppler
+  rsvg2
+  vte3
+  webkit2-gtk
+  wnck3
+
+BUNDLED WITH
+   2.4.10
