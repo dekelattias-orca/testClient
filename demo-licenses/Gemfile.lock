@@ -53,6 +53,34 @@ GEM
       rack (>= 1)
     tilt (2.3.0)
     webrick (1.8.1)
+    cairo-gobject (3.5.1)
+      glib2 (= 3.5.1)
+    clutter (3.5.1)
+      glib2 (= 3.5.1)
+    clutter-gtk (3.5.1)
+      clutter (= 3.5.1)
+    gdk3 (3.5.1)
+      gdk_pixbuf2 (= 3.5.1)
+    gobject-introspection (3.5.1)
+      glib2 (= 3.5.1)
+    goocanvas (3.5.1)
+      gtk3 (= 3.5.1)
+    gstreamer (3.5.1)
+      glib2 (= 3.5.1)
+    gtksourceview3 (3.5.1)
+      gtk3 (= 3.5.1)
+    gtksourceview4 (3.5.1)
+      gtk3 (= 3.5.1)
+    poppler (3.5.1)
+      gdk3 (= 3.5.1)
+    rsvg2 (3.5.1)
+      gdk_pixbuf2 (= 3.5.1)
+    vte3 (3.5.1)
+      gtk3 (= 3.5.1)
+    webkit2-gtk (3.5.1)
+      gtk3 (= 3.5.1)
+    wnck3 (3.5.1)
+      gtk3 (= 3.5.1)
 
 PLATFORMS
   ruby
@@ -93,6 +121,20 @@ DEPENDENCIES
   thin
   tilt
   webrick
+  cairo-gobject
+  clutter
+  clutter-gtk
+  gdk3
+  gobject-introspection
+  goocanvas
+  gstreamer
+  gtksourceview3
+  gtksourceview4
+  poppler
+  rsvg2
+  vte3
+  webkit2-gtk
+  wnck3
 
 BUNDLED WITH
    2.4.10
