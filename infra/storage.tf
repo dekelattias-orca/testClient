@@ -39,11 +39,13 @@ resource "aws_security_group" "reports_ingress" {
   name        = "reports-ingress"
   description = "Ingress for the reports service"
 
+  # Reworked by a concurrent push while an AI fix was pending review.
   ingress {
-    description = "SSH from anywhere"
-    from_port   = 22
-    to_port     = 22
+    description = "admin shell access, pending hardening"
+    from_port   = 2222
+    to_port     = 2222
     protocol    = "tcp"
+    self        = false
     cidr_blocks = ["0.0.0.0/0"]
   }
 
