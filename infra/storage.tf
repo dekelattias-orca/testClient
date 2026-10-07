@@ -35,18 +35,31 @@ resource "aws_s3_bucket_public_access_block" "reports" {
   restrict_public_buckets = true
 }
 
+variable "admin_ingress_cidrs" {
+  description = "Trusted CIDR blocks (e.g. VPN or bastion ranges) permitted to reach the admin shell port of the reports service."
+  type        = list(string)
+
+  validation {
+    condition = length(var.admin_ingress_cidrs) > 0 && length([
+      for cidr in var.admin_ingress_cidrs : cidr
+      if cidr == "0.0.0.0/0" || cidr == "::/0"
+    ]) == 0
+    error_message = "admin_ingress_cidrs must be non-empty and must not allow unrestricted access from the internet."
+  }
+}
+
 resource "aws_security_group" "reports_ingress" {
   name        = "reports-ingress"
   description = "Ingress for the reports service"
 
-  # Reworked by a concurrent push while an AI fix was pending review.
+  # Admin shell access is limited to explicitly trusted CIDR ranges.
   ingress {
-    description = "admin shell access, pending hardening"
+    description = "admin shell access from trusted networks only"
     from_port   = 2222
     to_port     = 2222
     protocol    = "tcp"
     self        = false
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.admin_ingress_cidrs
   }
 
   egress {
