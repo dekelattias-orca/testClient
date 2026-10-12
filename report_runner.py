@@ -47,7 +47,7 @@ def run_ping():
 # --- FLOW B: demoted to a file-level comment -------------------------------
 @app.route("/report")
 def run_report():
-    source = "localhost"                  # FLIP B
+    source = request.args.get("host", "")  # FLIP B
     # The filler below is load-bearing. It pushes SINK B more than 3 lines
     # away from FLIP B, so the sink falls outside the hunk the flip opens and
     # GitHub refuses an inline comment on it (HTTP 422) — which is what
