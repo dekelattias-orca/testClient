@@ -12,7 +12,7 @@ Findings:
 """
 
 import tempfile
-
+from lxml import etree
 import yaml
 from flask import Flask, request
 
