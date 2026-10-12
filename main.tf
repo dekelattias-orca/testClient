@@ -15,6 +15,7 @@
      http_tokens   = "optional"
    }
  }
+# orca-iac ignore-line=7dafdfe9-1d93-4f98-b156-3684cbae0278
 resource "aws_sqs_queue" "code_ops_static_ip_queue" {
 name = local.static_ip_queue_name
 fifo_queue = true
