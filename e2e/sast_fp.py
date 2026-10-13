@@ -16,6 +16,7 @@ def manifest_digest(parts: list[str]) -> str:
     """Multi-line false positive: the flagged call spans three lines, so the
     comment anchor and the statement's first line differ.
     """
+    # nosemgrep: cf3768d5-90b8-5a50-844a-8d2f90c6b428
     return hashlib.md5(
         "\n".join(sorted(parts)).encode()
     ).hexdigest()
