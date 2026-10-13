@@ -1,0 +1,12 @@
+{
+  "appSettings": [
+    {
+      "name": "AZURE_CLIENT_ID",
+      "value": "3f2b9c1e-7a4d-4e8b-9c6f-1d2e3a4b5c6d"
+    },
+    {
+      "name": "AppSettings__ClientSecret",
+      "value": "Xq38Q~hT7vLp2Wm_Nc9Rk4Zb.Yf6Gd1Js5Ue0Aw3"
+    }
+  ]
+}

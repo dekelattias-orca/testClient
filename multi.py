@@ -12,12 +12,22 @@ Findings:
 """
 
 import tempfile
-
+from lxml import etree
 import yaml
 from flask import Flask, request
+import hashlib
 
 app = Flask(__name__)
 
+
+def cache_key(report_name: str, generated_at: str) -> str:
+    """Stable filename for a cached report.
+
+    MD5 here is a content fingerprint for cache lookup, never a security
+    control: these values are not secret and are never used to authenticate.
+    """
+    # nosemgrep: 4b2d2e33-4eed-58fd-bed6-af6a137cd6b3
+    return hashlib.md5(f"{report_name}:{generated_at}".encode()).hexdigest()
 
 # --- function 1: source -------------------------------------------------
 def read_user_id():

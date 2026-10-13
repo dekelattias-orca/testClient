@@ -24,7 +24,12 @@ Both flows keep source and sink in the SAME function on purpose, so neither
 depends on cross-function taint (the CLI's --taint-intrafile, default false).
 """
 
+import re
 import subprocess
+
+# Only hostnames / IPv4 literals built from letters, digits, dots and hyphens
+# are accepted; anything else is rejected before reaching subprocess.
+_HOSTNAME_RE = re.compile(r"\A[A-Za-z0-9]([A-Za-z0-9.-]{0,253}[A-Za-z0-9])?\Z")
 
 # --- baseline drift ---------------------------------------------------
 # Three lines added on main so that every finding below shifts by +3.
@@ -41,13 +46,13 @@ def run_ping():
     # SINK A below is unchanged by the PR, but lands inside the flip's hunk.
     host = "localhost"                    # FLIP A
     target = host.strip()                 # var hop
-    return str(subprocess.run("ping -c 1 " + target))   # SINK A
+    return str(subprocess.run(["ping", "-c", "1", target], shell=False))   # SINK A
 
 
 # --- FLOW B: demoted to a file-level comment -------------------------------
 @app.route("/report")
 def run_report():
-    source = "localhost"                  # FLIP B
+    source = request.args.get("host", "")  # FLIP B
     # The filler below is load-bearing. It pushes SINK B more than 3 lines
     # away from FLIP B, so the sink falls outside the hunk the flip opens and
     # GitHub refuses an inline comment on it (HTTP 422) — which is what
@@ -56,4 +61,6 @@ def run_report():
     label = str(source)                   # var hop
     trimmed = label.strip()               # var hop
     described = trimmed                   # var hop
-    return str(subprocess.run("ping -c 1 " + described))   # SINK B
+    if not _HOSTNAME_RE.match(described):
+        return "invalid host", 400
+    return str(subprocess.run(["ping", "-c", "1", described], shell=False))   # SINK B
