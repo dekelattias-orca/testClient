@@ -89,3 +89,14 @@ def cache_key(report_name: str, generated_at: str) -> str:
     # nosemgrep: 4b2d2e33-4eed-58fd-bed6-af6a137cd6b3
     # nosemgrep: cf3768d5-90b8-5a50-844a-8d2f90c6b428
     return hashlib.md5(f"{report_name}:{generated_at}".encode()).hexdigest()
+
+
+def manifest_digest(parts: list[str]) -> str:
+    """Digest of a build manifest, used only to name a cache entry.
+
+    MD5 is a content fingerprint here, not a security control: the parts are
+    public build inputs and nothing authenticates on this value.
+    """
+    return hashlib.md5(
+        "\n".join(sorted(parts)).encode()
+    ).hexdigest()
