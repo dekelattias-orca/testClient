@@ -5,7 +5,13 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": "reports-archive",
-        "AccessControl": "PublicRead"
+        "AccessControl": "Private",
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
       }
     }
   }
