@@ -87,4 +87,5 @@ def cache_key(report_name: str, generated_at: str) -> str:
     control: these values are not secret and are never used to authenticate.
     """
     # nosemgrep: 4b2d2e33-4eed-58fd-bed6-af6a137cd6b3
+    # nosemgrep: cf3768d5-90b8-5a50-844a-8d2f90c6b428
     return hashlib.md5(f"{report_name}:{generated_at}".encode()).hexdigest()
