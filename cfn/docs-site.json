@@ -1,0 +1,25 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Public documentation site. The bucket is deliberately world-readable: it serves the published docs over S3 static website hosting, and every object in it is already public by design.",
+  "Resources": {
+    "DocsBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "orca-public-docs-site",
+        "AccessControl": "PublicRead",
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html",
+          "ErrorDocument": "404.html"
+        }
+      }
+    },
+    "DocsQueue": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "QueueName": "docs-rebuild",
+        "FifoQueue": false,
+        "SqsManagedSseEnabled": true
+      }
+    }
+  }
+}
