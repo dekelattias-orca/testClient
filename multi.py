@@ -97,6 +97,7 @@ def manifest_digest(parts: list[str]) -> str:
     MD5 is a content fingerprint here, not a security control: the parts are
     public build inputs and nothing authenticates on this value.
     """
+    # nosemgrep: cf3768d5-90b8-5a50-844a-8d2f90c6b428
     return hashlib.md5(
         "\n".join(sorted(parts)).encode()
     ).hexdigest()
