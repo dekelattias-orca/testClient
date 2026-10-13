@@ -17,7 +17,8 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "QueueName": "docs-rebuild",
-        "FifoQueue": false
+        "FifoQueue": false,
+        "SqsManagedSseEnabled": true
       }
     }
   }
