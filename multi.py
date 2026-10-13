@@ -11,6 +11,7 @@ Findings:
      yaml.load() on flask request data with no SafeLoader.
 """
 
+import hashlib
 import tempfile
 
 import yaml
@@ -77,3 +78,12 @@ def scratch_file():
 
 # --- non-taint secrets finding (caught by the secrets scanner) ----------
 API_TOKEN = "1234"  # hardcoded secret
+
+
+def cache_key(report_name: str, generated_at: str) -> str:
+    """Stable filename for a cached report.
+
+    MD5 here is a content fingerprint for cache lookup, never a security
+    control: these values are not secret and are never used to authenticate.
+    """
+    return hashlib.md5(f"{report_name}:{generated_at}".encode()).hexdigest()
