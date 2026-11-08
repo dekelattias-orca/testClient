@@ -1,9 +1,10 @@
+import shlex
 import subprocess
 import sqlite3
 
 
 def run(cmd):
-    return subprocess.call(cmd, shell=True)
+    return subprocess.call(shlex.split(cmd) if isinstance(cmd, str) else cmd, shell=False)
 
 
 def lookup(conn: sqlite3.Connection, name):
@@ -13,4 +14,4 @@ def lookup(conn: sqlite3.Connection, name):
 
 
 def run_other(cmd):
-    return subprocess.call(cmd, shell=True)
+    return subprocess.call(shlex.split(cmd) if isinstance(cmd, str) else cmd, shell=False)
